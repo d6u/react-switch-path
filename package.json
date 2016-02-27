@@ -45,7 +45,6 @@
     "webpack": "^1.12.14"
   },
   "scripts": {
-    "postinstall": "typings i",
     "test": "tslint ts-source/*",
     "clean": "rimraf es5 es6",
     "build:es5": "tsc -t es5 -m commonjs --outDir es5",
