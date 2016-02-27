@@ -1,0 +1,5 @@
+{
+  "ambientDependencies": {
+    "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#744a89c4b12aa6537bcc39e7581d291dc74a4c3a"
+  }
+}
