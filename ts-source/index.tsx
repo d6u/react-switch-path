@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Component, ComponentClass, Children, ReactElement, createElement } from 'react';
 
 const { toArray } = Children;
