@@ -1,6 +1,6 @@
 {
   "name": "react-switch-path",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Switch component to render React component like switch statement based on object path availability",
   "author": "Daiwei Lu <daiweilu123@gmail.com> (http://daiwei.lu)",
   "license": "MIT",
