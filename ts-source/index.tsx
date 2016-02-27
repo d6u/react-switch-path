@@ -1,11 +1,26 @@
 import * as React from 'react';
 import { Component, ComponentClass, Children, ReactElement, createElement } from 'react';
 
-type CaseElement = ReactElement<CaseProps | DefaultProps>;
-
 const { toArray } = Children;
 
-function renderChild(obj: any, children: CaseElement[] | CaseElement): ReactElement<any> {
+interface CaseProps {
+  path: string;
+  component: ComponentClass<any>;
+  children: CaseElement[] | CaseElement;
+}
+
+class Case extends Component<CaseProps, void> {}
+
+interface DefaultProps {
+  component: ComponentClass<any>;
+  children: CaseElement[] | CaseElement;
+}
+
+class Default extends Component<DefaultProps, void> {}
+
+type CaseElement = ReactElement<CaseProps | DefaultProps>;
+
+function renderChild(obj: Object, children: CaseElement[] | CaseElement): ReactElement<any> {
   let defaultComponent: ReactElement<DefaultProps>;
 
   for (const child of toArray(children) as CaseElement[]) {
@@ -31,7 +46,7 @@ function renderChild(obj: any, children: CaseElement[] | CaseElement): ReactElem
 }
 
 interface SwitchProps {
-  object: any;
+  object: Object;
   children: CaseElement[] | CaseElement;
 }
 
@@ -42,23 +57,8 @@ class Switch extends Component<SwitchProps, void> {
   }
 }
 
-interface CaseProps {
-  path: string;
-  component: ComponentClass<any>;
-  children: CaseElement[] | CaseElement;
-}
-
-class Case extends Component<CaseProps, void> {}
-
-interface DefaultProps {
-  component: ComponentClass<any>;
-  children: CaseElement[] | CaseElement;
-}
-
-class Default extends Component<DefaultProps, void> {}
-
 export {
-Switch,
-Case,
-Default,
+  Switch,
+  Case,
+  Default,
 };
