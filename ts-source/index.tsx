@@ -1,46 +1,64 @@
 import * as React from 'react';
-import { Component, Children, ReactElement, createElement } from 'react';
+import { Component, ComponentClass, Children, ReactElement, createElement } from 'react';
+
+type CaseElement = ReactElement<CaseProps | DefaultProps>;
 
 const { toArray } = Children;
 
+function renderChild(obj: any, children: CaseElement[] | CaseElement): ReactElement<any> {
+  let defaultComponent: ReactElement<DefaultProps>;
+
+  for (const child of toArray(children) as CaseElement[]) {
+    const { props: { component, children } } = child;
+
+    if (child.type === Default) {
+      defaultComponent = child;
+    }
+
+    const path = child.type === Case ? (child as ReactElement<CaseProps>).props.path : null;
+
+    if (obj[path] != null) {
+      return createElement(component, obj[path], renderChild(obj[path], children));
+    }
+  }
+
+  if (defaultComponent) {
+    const { props: { component, children } } = defaultComponent;
+    return createElement(component, obj, renderChild(obj, children));
+  }
+
+  return null;
+}
+
 interface SwitchProps {
   object: any;
-  children: Case[] | Case;
+  children: CaseElement[] | CaseElement;
 }
 
 class Switch extends Component<SwitchProps, void> {
   render() {
     const { object, children } = this.props;
-
-    for (const { props: { path, component } } of toArray(children) as ReactElement<any>[]) {
-      if (object[path] != null) {
-        return createElement(component, object[path]);
-      }
-    }
-
-    return null;
+    return renderChild(object, children);
   }
 }
 
 interface CaseProps {
   path: string;
-  component: React.Component<any, any>;
+  component: ComponentClass<any>;
+  children: CaseElement[] | CaseElement;
 }
 
-class Case extends Component<CaseProps, void> {
+class Case extends Component<CaseProps, void> {}
 
+interface DefaultProps {
+  component: ComponentClass<any>;
+  children: CaseElement[] | CaseElement;
 }
 
-// <Switch object={obj}>
-//   <Case path='propA' component={A}/>
-//   <Case path='propB' component={B}/>
-//   <Case path='propC' component={C}>
-//     <Case path='child' component={D}/>
-//   </Case>
-//   <Default component={Default}/>
-// </Switch>
+class Default extends Component<DefaultProps, void> {}
 
 export {
-  Switch,
-  Case,
+Switch,
+Case,
+Default,
 };
